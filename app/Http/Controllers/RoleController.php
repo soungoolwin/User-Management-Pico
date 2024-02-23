@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -11,7 +12,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        return view('roles.index', [
+            'roles' => Role::all()
+        ]);
     }
 
     /**
@@ -57,8 +60,11 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        // Redirect back with a success message
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }
