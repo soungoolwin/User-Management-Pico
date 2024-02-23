@@ -19,6 +19,7 @@
         <table class="w-full">
             <thead>
                 <tr>
+                    <th class="px-4 py-2 text-center">No</th>
                     <th class="px-4 py-2 text-center">ROLE</th>
                     <th class="px-4 py-2 text-center">ACTIONS</th>
                 </tr>
@@ -26,11 +27,12 @@
             <tbody>
                 @foreach ($roles as $role)
                     <tr>
+                        <td class="px-4 py-2 text-center">{{ $loop->iteration }}</td>
                         <td class="px-4 py-2 text-center">{{ $role->name }}</td>
                         <td class="px-4 py-2 text-center">
                             <div class="relative">
                                 <details class="dropdown w-[50%] mx-auto">
-                                    <summary class="m-1 btn border p-2 rounded-lg">open or close</summary>
+                                    <summary class="m-1 btn border p-2 rounded-lg">Actions</summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
                                         <li><a href="/home">Edit</a></li>
                                         <li>

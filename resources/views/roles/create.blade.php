@@ -1,106 +1,80 @@
 <x-layout>
-    <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
-        <main class="w-full flex-grow p-6">
-            <h1 class="w-full text-3xl text-black pb-6">Forms</h1>
+    <form method="POST" action="{{ route('roles.store') }}">
+        @csrf
 
-            <div class="flex flex-wrap">
-                <div class="w-full lg:w-1/2 my-6 pr-0 lg:pr-2">
-                    <p class="text-xl pb-6 flex items-center">
-                        <i class="fas fa-list mr-3"></i> Contact Form
-                    </p>
-                    <div class="leading-loose">
-                        <form class="p-10 bg-white rounded shadow-xl">
-                            <div class="">
-                                <label class="block text-sm text-gray-600" for="name">Name</label>
-                                <input class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" id="name"
-                                    name="name" type="text" required="" placeholder="Your Name"
-                                    aria-label="Name">
-                            </div>
-                            <div class="mt-2">
-                                <label class="block text-sm text-gray-600" for="email">Email</label>
-                                <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded" id="email"
-                                    name="email" type="text" required="" placeholder="Your Email"
-                                    aria-label="Email">
-                            </div>
-                            <div class="mt-2">
-                                <label class=" block text-sm text-gray-600" for="message">Message</label>
-                                <textarea class="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded" id="message" name="message" rows="6"
-                                    required="" placeholder="Your inquiry.." aria-label="Email"></textarea>
-                            </div>
-                            <div class="mt-6">
-                                <button class="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
-                                    type="submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+        <div class="flex my-3">
+            <label for="role_name" class="block mr-3">Role Name</label>
+            <input type="text" name="role_name" id="role_name" class="form-input">
+        </div>
 
-                <div class="w-full lg:w-1/2 mt-6 pl-0 lg:pl-2">
-                    <p class="text-xl pb-6 flex items-center">
-                        <i class="fas fa-list mr-3"></i> Checkout Form
-                    </p>
-                    <div class="leading-loose">
-                        <form class="p-10 bg-white rounded shadow-xl">
-                            <p class="text-lg text-gray-800 font-medium pb-4">Customer information</p>
-                            <div class="">
-                                <label class="block text-sm text-gray-600" for="cus_name">Name</label>
-                                <input class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" id="cus_name"
-                                    name="cus_name" type="text" required="" placeholder="Your Name"
-                                    aria-label="Name">
-                            </div>
-                            <div class="mt-2">
-                                <label class="block text-sm text-gray-600" for="cus_email">Email</label>
-                                <input class="w-full px-5  py-4 text-gray-700 bg-gray-200 rounded" id="cus_email"
-                                    name="cus_email" type="text" required="" placeholder="Your Email"
-                                    aria-label="Email">
-                            </div>
-                            <div class="mt-2">
-                                <label class=" block text-sm text-gray-600" for="cus_email">Address</label>
-                                <input class="w-full px-2 py-2 text-gray-700 bg-gray-200 rounded" id="cus_email"
-                                    name="cus_email" type="text" required="" placeholder="Street"
-                                    aria-label="Email">
-                            </div>
-                            <div class="mt-2">
-                                <label class="hidden text-sm block text-gray-600" for="cus_email">City</label>
-                                <input class="w-full px-2 py-2 text-gray-700 bg-gray-200 rounded" id="cus_email"
-                                    name="cus_email" type="text" required="" placeholder="City"
-                                    aria-label="Email">
-                            </div>
-                            <div class="inline-block mt-2 w-1/2 pr-1">
-                                <label class="hidden block text-sm text-gray-600" for="cus_email">Country</label>
-                                <input class="w-full px-2 py-2 text-gray-700 bg-gray-200 rounded" id="cus_email"
-                                    name="cus_email" type="text" required="" placeholder="Country"
-                                    aria-label="Email">
-                            </div>
-                            <div class="inline-block mt-2 -mx-1 pl-1 w-1/2">
-                                <label class="hidden block text-sm text-gray-600" for="cus_email">Zip</label>
-                                <input class="w-full px-2 py-2 text-gray-700 bg-gray-200 rounded" id="cus_email"
-                                    name="cus_email" type="text" required="" placeholder="Zip"
-                                    aria-label="Email">
-                            </div>
-                            <p class="text-lg text-gray-800 font-medium py-4">Payment information</p>
-                            <div class="">
-                                <label class="block text-sm text-gray-600" for="cus_name">Card</label>
-                                <input class="w-full px-2 py-2 text-gray-700 bg-gray-200 rounded" id="cus_name"
-                                    name="cus_name" type="text" required=""
-                                    placeholder="Card Number MM/YY CVC" aria-label="Name">
-                            </div>
-                            <div class="mt-6">
-                                <button class="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
-                                    type="submit">$3.00</button>
-                            </div>
-                        </form>
-                    </div>
-                    <p class="pt-6 text-gray-600">
-                        Source: <a class="underline"
-                            href="https://tailwindcomponents.com/component/checkout-form">https://tailwindcomponents.com/component/checkout-form</a>
-                    </p>
-                </div>
-            </div>
-        </main>
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Select All
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        View
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Create
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Update
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Delete
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach ($features as $feature)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {{ $feature->name }}
+                        </td>
 
-        <footer class="w-full bg-white text-right p-4">
-            Built by <a target="_blank" href="https://davidgrzyb.com" class="underline">David Grzyb</a>.
-        </footer>
-    </div>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <input type="checkbox" class="select-all rounded h-4 w-4 text-blue-600">
+                        </td>
+
+                        @foreach ($feature->permissions as $permission)
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
+                                    class="action-checkbox rounded h-4 w-4 text-blue-600">
+                            </td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Create Role
+        </button>
+    </form>
+
+
 </x-layout>
+
+<script>
+    const selectAllCheckboxes = document.querySelectorAll('.select-all');
+    selectAllCheckboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('click', function() {
+            const row = checkbox.closest('tr');
+            const actionCheckboxes = row.querySelectorAll('.action-checkbox');
+            actionCheckboxes.forEach(function(actionCheckbox) {
+                actionCheckbox.checked = checkbox.checked;
+            });
+        });
+    });
+</script>

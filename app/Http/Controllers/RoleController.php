@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feature;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -22,7 +24,10 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('roles.create');
+        return view('roles.create', [
+            'permissions' => Permission::all(),
+            'features' => Feature::all()
+        ]);
     }
 
     /**
@@ -30,7 +35,15 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = Role::create([
+            'name' => $request->input('role_name'),
+        ]);
+
+        $selectedPermissions = $request->input('permissions');
+        $permissions = Permission::whereIn('id', $selectedPermissions)->get();
+        $role->permissions()->attach($permissions);
+
+        return redirect()->route('roles.index')->with('success', 'New Role added successfully.');
     }
 
     /**
