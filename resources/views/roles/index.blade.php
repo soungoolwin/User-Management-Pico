@@ -14,7 +14,7 @@
         <div class="flex justify-between mb-6">
             <input class="w-64 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                 placeholder="Search" />
-            <button class="px-4 py-2 bg-blue-500 text-white rounded-md">Create Role</button>
+            <a href="{{ route('roles.create') }}" class="px-4 py-2 bg-blue-500 text-white rounded-md">Create Role</a>
         </div>
         <table class="w-full">
             <thead>

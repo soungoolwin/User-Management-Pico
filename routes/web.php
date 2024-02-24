@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('users', UserController::class);
+Route::get('/dashboard', function () {
+    return view('components.dashboard');
+})->name('dashboard');
 
-Route::resource('roles', RoleController::class);
+Route::get('/dashboard/login', [AuthController::class, 'index'])->name('login');
+Route::post('/dashboard/login', [AuthController::class, 'login']);
+Route::post('/dashboard/signout', [AuthController::class, 'signout'])->name('logout');
+
+
+Route::resource('/dashboard/users', UserController::class);
+
+Route::resource('/dashboard/roles', RoleController::class);
