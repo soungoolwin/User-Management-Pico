@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('users.create', [
+            'roles' => Role::all()
+        ]);
     }
 
     /**
@@ -30,7 +33,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'username' => 'required|unique:users',
+            'role_id' => 'required|exists:roles,id',
+            'phone' => 'nullable|string',
+            'email' => 'required|email|unique:users',
+            'address' => 'nullable|string',
+            'password' => 'required|string|confirmed',
+            'password_confirmation' => 'required|string',
+            'gender' => 'required|boolean',
+        ]);
+
+
+        try {
+            $user = new User();
+            $user->fill($validatedData);
+            $user->save();
+
+            return redirect()->route('users.index')->with('success', 'User created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('users.create')->withInput()->with('error', 'An error occurred while creating the user. Please try again.');
+        }
     }
 
     /**
