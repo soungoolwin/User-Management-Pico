@@ -57,18 +57,38 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Role $role)
     {
-        //
+        return view('roles.edit', [
+            'role' => $role,
+            'permissions' => Permission::all(),
+            'features' => Feature::all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Role $role)
     {
-        //
+
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        try {
+
+            $role->update($validatedData);
+            $selectedPermissions = $request->input('permissions');
+            $permissions = Permission::whereIn('id', $selectedPermissions)->get();
+            $role->permissions()->sync($permissions);
+
+            return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('roles.edit', $role->id)->withInput()->with('error', 'An error occurred while updating the role. Please try again.');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

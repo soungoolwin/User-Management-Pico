@@ -34,7 +34,7 @@
                                 <details class="dropdown w-[50%] mx-auto">
                                     <summary class="m-1 btn border p-2 rounded-lg">Actions</summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
-                                        <li><a href="/home">Edit</a></li>
+                                        <li><a href="{{ route('roles.edit', $role->id) }}">Edit</a></li>
                                         <li>
                                             <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
                                                 @csrf
