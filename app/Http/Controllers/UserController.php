@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -69,18 +71,40 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        return view('users.edit', [
+            'user' => $user,
+            'roles' => Role::all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'username' => 'required|unique:users,username,' . $user->id,
+            'role_id' => 'required|exists:roles,id',
+            'phone' => 'nullable|string',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'address' => 'nullable|string',
+            'password' => 'nullable|string|confirmed',
+            'password_confirmation' => 'nullable|string',
+            'gender' => 'required|boolean',
+        ]);
+
+        try {
+            $user->update($validatedData);
+
+            return redirect()->route('users.index')->with('success', 'User updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('users.edit', $user->id)->withInput()->with('error', 'An error occurred while updating the user. Please try again.');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

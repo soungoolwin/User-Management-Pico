@@ -43,7 +43,7 @@
                                 <details class="dropdown w-[50%] mx-auto">
                                     <summary class="m-1 btn border p-2 rounded-lg">Actions</summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
-                                        <li><a href="/home">Edit</a></li>
+                                        <li><a href="{{ route('users.edit', $user->id) }}">Edit</a></li>
                                         <li>
                                             <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                                 @csrf
