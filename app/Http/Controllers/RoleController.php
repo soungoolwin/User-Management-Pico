@@ -100,20 +100,22 @@ class RoleController extends Controller
         $permissionId = 7;
 
         if (Gate::allows('has-permission', $permissionId)) {
-            $validatedData = $request->validate([
-                'name' => 'required|string',
-            ]);
+            if ($role->id == 1 && $role->name == 'admin') {
+                $validatedData = $request->validate([
+                    'name' => 'required|string',
+                ]);
+                try {
+                    $role->update($validatedData);
+                    $selectedPermissions = $request->input('permissions');
+                    $permissions = Permission::whereIn('id', $selectedPermissions)->get();
+                    $role->permissions()->sync($permissions);
 
-            try {
-
-                $role->update($validatedData);
-                $selectedPermissions = $request->input('permissions');
-                $permissions = Permission::whereIn('id', $selectedPermissions)->get();
-                $role->permissions()->sync($permissions);
-
-                return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
-            } catch (\Exception $e) {
-                return redirect()->route('roles.edit', $role->id)->withInput()->with('error', 'An error occurred while updating the role. Please try again.');
+                    return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
+                } catch (\Exception $e) {
+                    return redirect()->route('roles.edit', $role->id)->withInput()->with('error', 'An error occurred while updating the role. Please try again.');
+                }
+            } else {
+                return abort(405);
             }
         } else {
             return redirect()->back()->with('error', 'Your are not allowed to do this');

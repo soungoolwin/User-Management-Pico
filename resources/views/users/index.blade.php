@@ -35,7 +35,8 @@
                                     <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
                                         @can('has-permission', 3)
                                             <li><a href="{{ route('users.edit', $user->id) }}">Edit</a></li>
-                                        @elsecan('has-permission', 4)
+                                        @endcan
+                                        @can('has-permission', 4)
                                             <li>
                                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                                     @csrf
@@ -43,11 +44,8 @@
                                                     <button type="submit">Delete</button>
                                                 </form></a>
                                             </li>
-                                        @else
-                                            <li>
-                                                <p>No Actions Allowed</p>
-                                            </li>
                                         @endcan
+
                                     </ul>
 
                                 </details>

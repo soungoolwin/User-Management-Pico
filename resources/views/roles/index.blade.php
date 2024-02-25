@@ -24,30 +24,30 @@
                         <td class="px-4 py-2 text-center">{{ $role->name }}</td>
                         <td class="px-4 py-2 text-center">
                             <div class="relative">
-                                <details class="dropdown w-[50%] mx-auto">
-                                    <summary class="m-1 btn border p-2 rounded-lg cursor-pointer">Actions</summary>
+                                @if ($role->id == 1 && $role->name == 'admin')
+                                    <p>Default Actions</p>
+                                @else
+                                    <details class="dropdown w-[50%] mx-auto">
+                                        <summary class="m-1 btn border p-2 rounded-lg cursor-pointer">Actions</summary>
 
 
-                                    <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
+                                        <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
+                                            @can('has-permission', 7)
+                                                <li><a href="{{ route('roles.edit', $role->id) }}">Edit</a></li>
+                                            @endcan
+                                            @can('has-permission', 8)
+                                                <li>
+                                                    <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit">Delete</button>
+                                                    </form></a>
+                                                </li>
+                                            @endcan
+                                        </ul>
 
-                                        @can('has-permission', 7)
-                                            <li><a href="{{ route('roles.edit', $role->id) }}">Edit</a></li>
-                                        @elsecan('has-permission', 8)
-                                            <li>
-                                                <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit">Delete</button>
-                                                </form></a>
-                                            </li>
-                                        @else
-                                            <li>
-                                                <p>No Actions Allowed</p>
-                                            </li>
-                                        @endcan
-                                    </ul>
-
-                                </details>
+                                    </details>
+                                @endif
                             </div>
                         </td>
                     </tr>
