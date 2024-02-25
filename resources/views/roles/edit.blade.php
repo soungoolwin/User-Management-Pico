@@ -1,4 +1,24 @@
 <x-layout>
+    @if (session('success'))
+        <div id="successMessage" class="alert alert-success text-center bg-green-300 text-white">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
+    @if (session('error'))
+        <div id="errorMessage" class="alert alert-success text-center bg-red-300 text-white">
+            {{ session('error') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
     <form method="POST" action="{{ route('roles.update', $role->id) }}">
         @csrf
         @method('PUT')
@@ -20,11 +40,11 @@
                     </th>
                     <th scope="col"
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        View
+                        Create
                     </th>
                     <th scope="col"
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Create
+                        View
                     </th>
                     <th scope="col"
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
