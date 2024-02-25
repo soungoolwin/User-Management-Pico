@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -15,9 +14,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index', [
-            'users' => User::all()
-        ]);
+        $permissionId = 2;
+
+        if (Gate::allows('has-permission', $permissionId)) {
+            return view('users.index', [
+                'users' => User::all()
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Your are not allowed to do this');
+        }
     }
 
     /**
@@ -25,9 +30,15 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create', [
-            'roles' => Role::all()
-        ]);
+        $permissionId = 1;
+
+        if (Gate::allows('has-permission', $permissionId)) {
+            return view('users.create', [
+                'roles' => Role::all()
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Your are not allowed to do this');
+        }
     }
 
     /**
@@ -36,27 +47,33 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        $validatedData = $request->validate([
-            'name' => 'required|string',
-            'username' => 'required|unique:users',
-            'role_id' => 'required|exists:roles,id',
-            'phone' => 'nullable|string',
-            'email' => 'required|email|unique:users',
-            'address' => 'nullable|string',
-            'password' => 'required|string|confirmed',
-            'password_confirmation' => 'required|string',
-            'gender' => 'required|boolean',
-        ]);
+        $permissionId = 1;
+
+        if (Gate::allows('has-permission', $permissionId)) {
+            $validatedData = $request->validate([
+                'name' => 'required|string',
+                'username' => 'required|unique:users',
+                'role_id' => 'required|exists:roles,id',
+                'phone' => 'nullable|string',
+                'email' => 'required|email|unique:users',
+                'address' => 'nullable|string',
+                'password' => 'required|string|confirmed',
+                'password_confirmation' => 'required|string',
+                'gender' => 'required|boolean',
+            ]);
 
 
-        try {
-            $user = new User();
-            $user->fill($validatedData);
-            $user->save();
+            try {
+                $user = new User();
+                $user->fill($validatedData);
+                $user->save();
 
-            return redirect()->route('users.index')->with('success', 'User created successfully!');
-        } catch (\Exception $e) {
-            return redirect()->route('users.create')->withInput()->with('error', 'An error occurred while creating the user. Please try again.');
+                return redirect()->route('users.index')->with('success', 'User created successfully!');
+            } catch (\Exception $e) {
+                return redirect()->route('users.create')->withInput()->with('error', 'An error occurred while creating the user. Please try again.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Your are not allowed to do this');
         }
     }
 
@@ -73,10 +90,16 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', [
-            'user' => $user,
-            'roles' => Role::all()
-        ]);
+        $permissionId = 3;
+
+        if (Gate::allows('has-permission', $permissionId)) {
+            return view('users.edit', [
+                'user' => $user,
+                'roles' => Role::all()
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Your are not allowed to do this');
+        }
     }
 
     /**
@@ -84,24 +107,30 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string',
-            'username' => 'required|unique:users,username,' . $user->id,
-            'role_id' => 'required|exists:roles,id',
-            'phone' => 'nullable|string',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'address' => 'nullable|string',
-            'password' => 'nullable|string|confirmed',
-            'password_confirmation' => 'nullable|string',
-            'gender' => 'required|boolean',
-        ]);
+        $permissionId = 3;
 
-        try {
-            $user->update($validatedData);
+        if (Gate::allows('has-permission', $permissionId)) {
+            $validatedData = $request->validate([
+                'name' => 'required|string',
+                'username' => 'required|unique:users,username,' . $user->id,
+                'role_id' => 'required|exists:roles,id',
+                'phone' => 'nullable|string',
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'address' => 'nullable|string',
+                'password' => 'nullable|string|confirmed',
+                'password_confirmation' => 'nullable|string',
+                'gender' => 'required|boolean',
+            ]);
 
-            return redirect()->route('users.index')->with('success', 'User updated successfully!');
-        } catch (\Exception $e) {
-            return redirect()->route('users.edit', $user->id)->withInput()->with('error', 'An error occurred while updating the user. Please try again.');
+            try {
+                $user->update($validatedData);
+
+                return redirect()->route('users.index')->with('success', 'User updated successfully!');
+            } catch (\Exception $e) {
+                return redirect()->route('users.edit', $user->id)->withInput()->with('error', 'An error occurred while updating the user. Please try again.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Your are not allowed to do this');
         }
     }
 
@@ -111,8 +140,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        $permissionId = 4;
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        if (Gate::allows('has-permission', $permissionId)) {
+            $user->delete();
+
+            return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Your are not allowed to do this');
+        }
     }
 }

@@ -12,29 +12,34 @@
             <i class="fas fa-tachometer-alt mr-3"></i>
             Dashboard
         </a>
+        @can('has-permission', 2)
+            <details>
+                <summary class="question py-3 px-5 cursor-pointer select-none w-full outline-none flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6 mr-3">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
 
-        <details>
-            <summary class="question py-3 px-5 cursor-pointer select-none w-full outline-none flex">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6 mr-3">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
+                    <p>Users</p>
 
-                <p>Users</p>
+                </summary>
 
-            </summary>
+                @can('has-permission', 1)
+                    <a href="{{ route('users.create') }}"
+                        class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+                        Create User</p>
+                    </a>
+                @endcan
+                @can('has-permission', [2, 3, 4])
+                    <a href="{{ route('users.index') }}"
+                        class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
 
-            <a href="{{ route('users.create') }}"
-                class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-                Create User</p>
-            </a>
-            <a href="{{ route('users.index') }}"
-                class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
-
-                <p>Users List</p>
-            </a>
-        </details>
+                        <p>Users List</p>
+                    </a>
+                @endcan
+            </details>
+        @endcan
 
         @can('has-permission', 6)
             <details>

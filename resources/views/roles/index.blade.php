@@ -43,32 +43,28 @@
                         <td class="px-4 py-2 text-center">
                             <div class="relative">
                                 <details class="dropdown w-[50%] mx-auto">
-
-                                    @can('has-permission', [7, 8])
-                                        <summary class="m-1 btn border p-2 rounded-lg cursor-pointer">Actions</summary>
-                                    @else
-                                        <summary class="m-1 btn border p-2 rounded-lg cursor-pointer">No Actions Allowed
-                                        </summary>
-                                    @endcan
+                                    <summary class="m-1 btn border p-2 rounded-lg cursor-pointer">Actions</summary>
 
 
-                                    @can('has-permission', [7, 8])
-                                        <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
-                                            @can('has-permission', 7)
-                                                <li><a href="{{ route('roles.edit', $role->id) }}">Edit</a></li>
-                                            @endcan
-                                            @can('has-permission', 8)
-                                                <li>
-                                                    <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit">Delete</button>
-                                                    </form></a>
-                                                </li>
-                                            @endcan
+                                    <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
 
-                                        </ul>
-                                    @endcan
+                                        @can('has-permission', 7)
+                                            <li><a href="{{ route('roles.edit', $role->id) }}">Edit</a></li>
+                                        @elsecan('has-permission', 8)
+                                            <li>
+                                                <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit">Delete</button>
+                                                </form></a>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <p>No Actions Allowed</p>
+                                            </li>
+                                        @endcan
+                                    </ul>
+
                                 </details>
                             </div>
                         </td>

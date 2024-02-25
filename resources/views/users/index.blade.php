@@ -9,12 +9,18 @@
             }, 3000);
         </script>
     @endif
+    @if (session('error'))
+        <div id="errorMessage" class="alert alert-success text-center bg-red-300 text-white">
+            {{ session('error') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
     <div class="w-[50%] mx-auto my-8">
-        <div class="flex my-3 justify-between">
-            <div>
-                <label for="role_name" class="block mr-3">Search User</label>
-                <input type="text" name="role_name" id="role_name" class="form-input">
-            </div>
+        <div class="flex my-3 row flex-row-reverse">
             <div>
                 <a href="{{ route('users.create') }}" class="px-4 py-2 bg-blue-500 text-white rounded-md">Create</a>
             </div>
@@ -38,20 +44,29 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($users as $user)
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-4 py-2 text-center">
                             <div class="relative">
                                 <details class="dropdown w-[50%] mx-auto">
-                                    <summary class="m-1 btn border p-2 rounded-lg">Actions</summary>
+
+                                    <summary class="m-1 btn border p-2 rounded-lg cursor-pointer">Actions</summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
-                                        <li><a href="{{ route('users.edit', $user->id) }}">Edit</a></li>
-                                        <li>
-                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit">Delete</button>
-                                            </form></a>
-                                        </li>
+                                        @can('has-permission', 3)
+                                            <li><a href="{{ route('users.edit', $user->id) }}">Edit</a></li>
+                                        @elsecan('has-permission', 4)
+                                            <li>
+                                                <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit">Delete</button>
+                                                </form></a>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <p>No Actions Allowed</p>
+                                            </li>
+                                        @endcan
                                     </ul>
+
                                 </details>
                             </div>
                         </td>
