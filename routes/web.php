@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,16 +18,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect('/dashboard');
+    } else {
+        return redirect('/dashboard/login');
+    }
 });
-Route::get('/dashboard', function () {
-    return view('components.dashboard');
-})->name('dashboard');
-
-Route::get('/dashboard/login', [AuthController::class, 'index'])->name('login');
-Route::post('/dashboard/login', [AuthController::class, 'login']);
-Route::post('/dashboard/signout', [AuthController::class, 'signout'])->name('logout');
 
 
-Route::resource('/dashboard/users', UserController::class);
+Route::middleware(['guest'])->group(function () {
+    Route::get('/dashboard/login', [AuthController::class, 'index'])->name('login');
+    Route::post('/dashboard/login', [AuthController::class, 'login']);
+});
 
-Route::resource('/dashboard/roles', RoleController::class);
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/dashboard/users', UserController::class);
+    Route::resource('/dashboard/roles', RoleController::class);
+    Route::get('/dashboard', function () {
+        return view('components.dashboard');
+    })->name('dashboard');
+    Route::post('/dashboard/signout', [AuthController::class, 'signout'])->name('logout');
+});
