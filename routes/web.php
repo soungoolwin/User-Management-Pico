@@ -17,20 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('/dashboard');
-    } else {
-        return redirect('/dashboard/login');
-    }
-});
-
 
 Route::middleware(['guest'])->group(function () {
+    Route::get('/', fn () => redirect('/dashboard'));
     Route::get('/dashboard/login', [AuthController::class, 'index'])->name('login');
     Route::post('/dashboard/login', [AuthController::class, 'login']);
 });
-
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('/dashboard/users', UserController::class);
