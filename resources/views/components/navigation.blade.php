@@ -9,7 +9,7 @@
             <i class="fas fa-tachometer-alt mr-3"></i>
             Dashboard
         </a>
-        @can('has-permission', 2)
+        @can('viewAny', App\Models\User::class)
             <details>
                 <summary class="question py-3 px-5 cursor-pointer select-none w-full outline-none flex">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -22,13 +22,13 @@
 
                 </summary>
 
-                @can('has-permission', 1)
+                @can('create', App\Models\User::class)
                     <a href="{{ route('users.create') }}"
                         class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
                         Create User</p>
                     </a>
                 @endcan
-                @can('has-permission', [2, 3, 4])
+                @canany(['viewAny', 'update', 'delete'], App\Models\User::class)
                     <a href="{{ route('users.index') }}"
                         class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
 

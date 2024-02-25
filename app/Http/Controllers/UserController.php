@@ -14,9 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $permissionId = 2;
-
-        if (Gate::allows('has-permission', $permissionId)) {
+        if (Gate::allows('viewAny', User::class)) {
             return view('users.index', [
                 'users' => User::all()
             ]);
@@ -30,9 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $permissionId = 1;
-
-        if (Gate::allows('has-permission', $permissionId)) {
+        if (Gate::allows('create', User::class)) {
             return view('users.create', [
                 'roles' => Role::all()
             ]);
@@ -47,9 +43,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        $permissionId = 1;
-
-        if (Gate::allows('has-permission', $permissionId)) {
+        if (Gate::allows('create', User::class)) {
             $validatedData = $request->validate([
                 'name' => 'required|string',
                 'username' => 'required|unique:users',
@@ -90,9 +84,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $permissionId = 3;
-
-        if (Gate::allows('has-permission', $permissionId)) {
+        if (Gate::allows('update', User::class)) {
             return view('users.edit', [
                 'user' => $user,
                 'roles' => Role::all()
@@ -107,9 +99,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $permissionId = 3;
-
-        if (Gate::allows('has-permission', $permissionId)) {
+        if (Gate::allows('update', User::class)) {
             $validatedData = $request->validate([
                 'name' => 'required|string',
                 'username' => 'required|unique:users,username,' . $user->id,
@@ -140,9 +130,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $permissionId = 4;
-
-        if (Gate::allows('has-permission', $permissionId)) {
+        if (Gate::allows('delete', User::class)) {
             $user->delete();
 
             return redirect()->route('users.index')->with('success', 'User deleted successfully.');

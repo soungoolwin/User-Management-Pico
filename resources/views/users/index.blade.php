@@ -33,10 +33,10 @@
                                     <summary class="m-1 btn border pr-2 py-2 rounded-lg cursor-pointer">Actions
                                     </summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
-                                        @can('has-permission', 3)
+                                        @can('update', App\Models\User::class)
                                             <li><a href="{{ route('users.edit', $user->id) }}">Edit</a></li>
                                         @endcan
-                                        @can('has-permission', 4)
+                                        @can('delete', App\Models\User::class)
                                             <li>
                                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                                     @csrf
