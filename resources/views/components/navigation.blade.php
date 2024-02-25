@@ -34,11 +34,11 @@
 
                         <p>Users List</p>
                     </a>
-                @endcan
+                @endcanany
             </details>
         @endcan
 
-        @can('has-permission', 6)
+        @can('viewAny', App\Models\Role::class)
             <details>
                 <summary class="question py-3 px-5 cursor-pointer select-none w-full outline-none flex">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -51,19 +51,19 @@
                     <p>Roles</p>
 
                 </summary>
-                @can('has-permission', 5)
+                @can('create', App\Models\Role::class)
                     <a href="{{ route('roles.create') }}"
                         class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
                         Create Roles</p>
                     </a>
                 @endcan
-                @can('has-permission', [6, 7, 8])
+                @canany(['viewAny', 'update', 'delete'], App\Models\Role::class)
                     <a href="{{ route('roles.index') }}"
                         class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
 
                         <p>Roles List</p>
                     </a>
-                @endcan
+                @endcanany
 
             </details>
         @endcan

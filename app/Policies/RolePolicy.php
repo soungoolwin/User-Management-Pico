@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class RolePolicy
 {
@@ -12,7 +13,8 @@ class RolePolicy
      */
     public function viewAny(): bool
     {
-        //
+        $user = Auth::user();
+        return $user->role->permissions()->where('role_permissions.permission_id', 6)->exists();
     }
 
     /**
@@ -28,7 +30,8 @@ class RolePolicy
      */
     public function create(): bool
     {
-        //
+        $user = Auth::user();
+        return $user->role->permissions()->where('role_permissions.permission_id', 5)->exists();
     }
 
     /**
@@ -36,7 +39,8 @@ class RolePolicy
      */
     public function update(): bool
     {
-        //
+        $user = Auth::user();
+        return $user->role->permissions()->where('role_permissions.permission_id', 7)->exists();
     }
 
     /**
@@ -44,7 +48,8 @@ class RolePolicy
      */
     public function delete(): bool
     {
-        //
+        $user = Auth::user();
+        return $user->role->permissions()->where('role_permissions.permission_id', 8)->exists();
     }
 
     /**
