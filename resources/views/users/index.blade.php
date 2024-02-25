@@ -1,24 +1,6 @@
 <x-layout>
-    @if (session('success'))
-        <div id="successMessage" class="alert alert-success text-center bg-green-300 text-white">
-            {{ session('success') }}
-        </div>
-        <script>
-            setTimeout(function() {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 3000);
-        </script>
-    @endif
-    @if (session('error'))
-        <div id="errorMessage" class="alert alert-success text-center bg-red-300 text-white">
-            {{ session('error') }}
-        </div>
-        <script>
-            setTimeout(function() {
-                document.getElementById('errorMessage').style.display = 'none';
-            }, 3000);
-        </script>
-    @endif
+    <x-successMessage />
+    <x-errorMessage />
     <div class="w-[50%] mx-auto my-8">
         <div class="flex my-3 row flex-row-reverse">
             <div>
@@ -48,7 +30,8 @@
                             <div class="relative">
                                 <details class="dropdown w-[50%] mx-auto">
 
-                                    <summary class="m-1 btn border p-2 rounded-lg cursor-pointer">Actions</summary>
+                                    <summary class="m-1 btn border pr-2 py-2 rounded-lg cursor-pointer">Actions
+                                    </summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] rounded-lg">
                                         @can('has-permission', 3)
                                             <li><a href="{{ route('users.edit', $user->id) }}">Edit</a></li>

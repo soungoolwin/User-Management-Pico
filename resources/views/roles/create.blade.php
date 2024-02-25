@@ -1,24 +1,6 @@
 <x-layout>
-    @if (session('success'))
-        <div id="successMessage" class="alert alert-success text-center bg-green-300 text-white">
-            {{ session('success') }}
-        </div>
-        <script>
-            setTimeout(function() {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 3000);
-        </script>
-    @endif
-    @if (session('error'))
-        <div id="errorMessage" class="alert alert-success text-center bg-red-300 text-white">
-            {{ session('error') }}
-        </div>
-        <script>
-            setTimeout(function() {
-                document.getElementById('errorMessage').style.display = 'none';
-            }, 3000);
-        </script>
-    @endif
+    <x-successMessage />
+    <x-errorMessage />
     <form method="POST" action="{{ route('roles.store') }}">
         @csrf
 
