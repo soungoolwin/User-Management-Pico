@@ -35,7 +35,7 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($request->only('username', 'password'))) {
-            return redirect()->intended('/dashboard/users/create');
+            return redirect()->intended('/dashboard');
         } else {
             return back()->with('error', 'Invalid login credentials');
         }
