@@ -10,47 +10,44 @@ use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
+    protected $role;
+
+    public function __construct()
+    {
+        $this->role = new Role();
+    }
     public function index()
     {
-        if (Gate::allows('viewAny', Role::class)) {
-            return view('roles.index', [
-                'roles' => Role::all()
-            ]);
-        } else {
-            return redirect()->back()->with('error', 'Your are not allowed to do this');
-        }
+        $this->role->authorizeAction('viewAny', Role::class);
+        return view('roles.index', [
+            'roles' => Role::all()
+        ]);
     }
 
     public function create()
     {
-        if (Gate::allows('create', Role::class)) {
-            return view('roles.create', [
-                'permissions' => Permission::all(),
-                'features' => Feature::all()
-            ]);
-        } else {
-            return redirect()->back()->with('error', 'Your are not allowed to do this');
-        }
+        $this->role->authorizeAction('create', Role::class);
+        return view('roles.create', [
+            'permissions' => Permission::all(),
+            'features' => Feature::all()
+        ]);
     }
 
     public function store(Request $request)
     {
-        if (Gate::allows('create', Role::class)) {
-            $validatedData = $request->validate([
-                'role_name' => 'required|string',
-            ]);
-            $role = Role::create([
-                'name' => $validatedData,
-            ]);
+        $this->role->authorizeAction('create', Role::class);
+        $validatedData = $request->validate([
+            'role_name' => 'required|string',
+        ]);
+        $role = Role::create([
+            'name' => $validatedData,
+        ]);
 
-            $selectedPermissions = $request->input('permissions');
-            $permissions = Permission::whereIn('id', $selectedPermissions)->get();
-            $role->permissions()->attach($permissions);
+        $selectedPermissions = $request->input('permissions');
+        $permissions = Permission::whereIn('id', $selectedPermissions)->get();
+        $role->permissions()->attach($permissions);
 
-            return redirect()->route('roles.index')->with('success', 'New Role added successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Your are not allowed to do this');
-        }
+        return redirect()->route('roles.index')->with('success', 'New Role added successfully.');
     }
 
     public function show(string $id)
@@ -60,52 +57,43 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        if (Gate::allows('update', Role::class)) {
-            return view('roles.edit', [
-                'role' => $role,
-                'permissions' => Permission::all(),
-                'features' => Feature::all()
-            ]);
-        } else {
-            return redirect()->back()->with('error', 'Your are not allowed to do this');
-        }
+        $this->role->authorizeAction('update', Role::class);
+        return view('roles.edit', [
+            'role' => $role,
+            'permissions' => Permission::all(),
+            'features' => Feature::all()
+        ]);
     }
 
     public function update(Request $request, Role $role)
     {
 
-        if (Gate::allows('update', Role::class)) {
+        $this->role->authorizeAction('update', Role::class);
 
-            $validatedData = $request->validate([
-                'name' => 'required|string',
-            ]);
-            try {
-                $role->update($validatedData);
-                $selectedPermissions = $request->input('permissions');
-                $permissions = Permission::whereIn('id', $selectedPermissions)->get();
-                $role->permissions()->sync($permissions);
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+        ]);
+        try {
+            $role->update($validatedData);
+            $selectedPermissions = $request->input('permissions');
+            $permissions = Permission::whereIn('id', $selectedPermissions)->get();
+            $role->permissions()->sync($permissions);
 
-                if (Gate::allows('viewAny', Role::class)) {
-                    return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
-                } else {
-                    return redirect()->route('dashboard');
-                }
-            } catch (\Exception $e) {
-                return redirect()->route('roles.edit', $role->id)->withInput()->with('error', 'An error occurred while updating the role. Please try again.');
+            if (Gate::allows('viewAny', Role::class)) {
+                return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
+            } else {
+                return redirect()->route('dashboard');
             }
-        } else {
-            return redirect()->back()->with('error', 'Your are not allowed to do this');
+        } catch (\Exception $e) {
+            return redirect()->route('roles.edit', $role->id)->withInput()->with('error', 'An error occurred while updating the role. Please try again.');
         }
     }
 
     public function destroy(Role $role)
     {
-        if (Gate::allows('delete', Role::class)) {
-            $role->delete();
+        $this->role->authorizeAction('delete', Role::class);
+        $role->delete();
 
-            return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Your are not allowed to do this');
-        }
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }

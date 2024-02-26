@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 
 class Role extends Model
 {
@@ -18,5 +19,11 @@ class Role extends Model
     public function permissions()
     {
         return $this->belongsToMany(Permission::class, 'role_permissions');
+    }
+    public function authorizeAction($action, $model)
+    {
+        if (!Gate::allows($action, $model)) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }
