@@ -1,4 +1,4 @@
-# Laravel Project Setup
+# Project Setup
 
 This repository contains a Laravel project for user management.
 
