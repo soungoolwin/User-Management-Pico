@@ -6,7 +6,10 @@
 
         <div class="flex my-3">
             <label for="role_name" class="block mr-3">Role Name</label>
-            <input type="text" name="role_name" id="role_name" class="form-input">
+            <input type="text" name="role_name" id="role_name" class="form-input" required>
+            @error('role_name')
+                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+            @enderror
         </div>
 
         <table class="min-w-full divide-y divide-gray-200">

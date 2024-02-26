@@ -9,7 +9,7 @@
             <i class="fas fa-tachometer-alt mr-3"></i>
             Dashboard
         </a>
-        @can('viewAny', App\Models\User::class)
+        @canany(['viewAny', 'update', 'delete'], App\Models\Role::class)
             <details>
                 <summary class="question py-3 px-5 cursor-pointer select-none w-full outline-none flex">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -28,7 +28,7 @@
                         Create User</p>
                     </a>
                 @endcan
-                @canany(['viewAny', 'update', 'delete'], App\Models\User::class)
+                @canany(['viewAny'], App\Models\User::class)
                     <a href="{{ route('users.index') }}"
                         class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
 
@@ -36,9 +36,9 @@
                     </a>
                 @endcanany
             </details>
-        @endcan
+        @endcanany
 
-        @can('viewAny', App\Models\Role::class)
+        @canany(['viewAny', 'update', 'delete'], App\Models\Role::class)
             <details>
                 <summary class="question py-3 px-5 cursor-pointer select-none w-full outline-none flex">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -57,7 +57,7 @@
                         Create Roles</p>
                     </a>
                 @endcan
-                @canany(['viewAny', 'update', 'delete'], App\Models\Role::class)
+                @canany(['viewAny'], App\Models\Role::class)
                     <a href="{{ route('roles.index') }}"
                         class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
 
@@ -66,7 +66,7 @@
                 @endcanany
 
             </details>
-        @endcan
+        @endcanany
     </nav>
     <a href="#"
         class="absolute w-full upgrade-btn bottom-0 active-nav-link text-white flex items-center justify-center py-4">

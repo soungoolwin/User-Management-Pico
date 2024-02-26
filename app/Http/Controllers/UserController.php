@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         if (Gate::allows('viewAny', User::class)) {
@@ -23,9 +20,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         if (Gate::allows('create', User::class)) {
@@ -37,9 +31,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
 
@@ -71,17 +62,11 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(User $user)
     {
         if (Gate::allows('update', User::class)) {
@@ -94,9 +79,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, User $user)
     {
         if (Gate::allows('update', User::class)) {
@@ -114,8 +96,11 @@ class UserController extends Controller
 
             try {
                 $user->update($validatedData);
-
-                return redirect()->route('users.index')->with('success', 'User updated successfully!');
+                if (Gate::allows('viewAny', User::class)) {
+                    return redirect()->route('users.index')->with('success', 'User updated successfully!');
+                } else {
+                    return redirect()->route('dashboard');
+                }
             } catch (\Exception $e) {
                 return redirect()->route('users.edit', $user->id)->withInput()->with('error', 'An error occurred while updating the user. Please try again.');
             }
@@ -124,10 +109,6 @@ class UserController extends Controller
         }
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(User $user)
     {
         if (Gate::allows('delete', User::class)) {

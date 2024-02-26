@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         if (Gate::allows('viewAny', Role::class)) {
@@ -24,9 +21,6 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         if (Gate::allows('create', Role::class)) {
@@ -39,14 +33,14 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         if (Gate::allows('create', Role::class)) {
+            $validatedData = $request->validate([
+                'role_name' => 'required|string',
+            ]);
             $role = Role::create([
-                'name' => $request->input('role_name'),
+                'name' => $validatedData,
             ]);
 
             $selectedPermissions = $request->input('permissions');
@@ -59,17 +53,11 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Role $role)
     {
         if (Gate::allows('update', Role::class)) {
@@ -83,9 +71,6 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Role $role)
     {
 
@@ -100,7 +85,11 @@ class RoleController extends Controller
                 $permissions = Permission::whereIn('id', $selectedPermissions)->get();
                 $role->permissions()->sync($permissions);
 
-                return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
+                if (Gate::allows('viewAny', Role::class)) {
+                    return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
+                } else {
+                    return redirect()->route('dashboard');
+                }
             } catch (\Exception $e) {
                 return redirect()->route('roles.edit', $role->id)->withInput()->with('error', 'An error occurred while updating the role. Please try again.');
             }
@@ -109,10 +98,6 @@ class RoleController extends Controller
         }
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Role $role)
     {
         if (Gate::allows('delete', Role::class)) {
