@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Gate;
 class RoleController extends Controller
 {
     protected $role;
-
     public function __construct()
     {
         $this->role = new Role();
     }
+
     public function index()
     {
-        $this->role->authorizeAction('viewAny', Role::class);
+        $this->role->authorizeAction('viewAny');
         return view('roles.index', [
             'roles' => Role::all()
         ]);
@@ -26,7 +26,7 @@ class RoleController extends Controller
 
     public function create()
     {
-        $this->role->authorizeAction('create', Role::class);
+        $this->role->authorizeAction('create');
         return view('roles.create', [
             'permissions' => Permission::all(),
             'features' => Feature::all()
@@ -35,7 +35,7 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        $this->role->authorizeAction('create', Role::class);
+        $this->role->authorizeAction('create');
         $validatedData = $request->validate([
             'role_name' => 'required|string',
         ]);
@@ -50,14 +50,9 @@ class RoleController extends Controller
         return redirect()->route('roles.index')->with('success', 'New Role added successfully.');
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
     public function edit(Role $role)
     {
-        $this->role->authorizeAction('update', Role::class);
+        $this->role->authorizeAction('update');
         return view('roles.edit', [
             'role' => $role,
             'permissions' => Permission::all(),
@@ -68,7 +63,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
 
-        $this->role->authorizeAction('update', Role::class);
+        $this->role->authorizeAction('update');
 
         $validatedData = $request->validate([
             'name' => 'required|string',
@@ -79,7 +74,7 @@ class RoleController extends Controller
             $permissions = Permission::whereIn('id', $selectedPermissions)->get();
             $role->permissions()->sync($permissions);
 
-            if (Gate::allows('viewAny', Role::class)) {
+            if (Gate::allows('viewAny')) {
                 return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
             } else {
                 return redirect()->route('dashboard');
@@ -91,7 +86,7 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        $this->role->authorizeAction('delete', Role::class);
+        $this->role->authorizeAction('delete');
         $role->delete();
 
         return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');

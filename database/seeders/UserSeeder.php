@@ -17,13 +17,13 @@ class UserSeeder extends Seeder
         $adminRole = Role::where('name', 'admin')->first();
 
         User::create([
-            'name' => 'Admin User1',
-            'username' => 'admin1',
+            'name' => 'Demo',
+            'username' => 'demo',
             'role_id' => $adminRole->id,
             'phone' => '1234567890',
             'email' => 'admin@example.com',
             'address' => 'Admin Address',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('picosbs'),
             'gender' => 1,
             'is_active' => true,
         ]);

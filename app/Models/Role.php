@@ -20,8 +20,10 @@ class Role extends Model
     {
         return $this->belongsToMany(Permission::class, 'role_permissions');
     }
-    public function authorizeAction($action, $model)
+
+    public function authorizeAction($action)
     {
+        $model = get_called_class();
         if (!Gate::allows($action, $model)) {
             abort(403, 'Unauthorized action.');
         }

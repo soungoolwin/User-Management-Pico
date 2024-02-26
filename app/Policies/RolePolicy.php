@@ -2,69 +2,31 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
 class RolePolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(): bool
     {
         $user = Auth::user();
         return $user->role->permissions()->where('role_permissions.permission_id', 6)->exists();
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(): bool
     {
         $user = Auth::user();
         return $user->role->permissions()->where('role_permissions.permission_id', 5)->exists();
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(): bool
     {
         $user = Auth::user();
         return $user->role->permissions()->where('role_permissions.permission_id', 7)->exists();
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(): bool
     {
         $user = Auth::user();
         return $user->role->permissions()->where('role_permissions.permission_id', 8)->exists();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(): bool
-    {
-        //
     }
 }

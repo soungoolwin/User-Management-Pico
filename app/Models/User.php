@@ -55,8 +55,9 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function authorizeAction($action, $model)
+    public function authorizeAction($action)
     {
+        $model = get_called_class();
         if (!Gate::allows($action, $model)) {
             abort(403, 'Unauthorized action.');
         }

@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Gate;
 class UserController extends Controller
 {
     protected $user;
-
     public function __construct()
     {
         $this->user = new User();
     }
+
     public function index()
     {
-        $this->user->authorizeAction('viewAny', User::class);
+        $this->user->authorizeAction('viewAny');
         return view('users.index', [
             'users' => User::all()
         ]);
@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $this->user->authorizeAction('create', User::class);
+        $this->user->authorizeAction('create');
         return view('users.create', [
             'roles' => Role::all()
         ]);
@@ -34,7 +34,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        $this->user->authorizeAction('create', User::class);
+        $this->user->authorizeAction('create');
         $validatedData = $request->validate([
             'name' => 'required|string',
             'username' => 'required|unique:users',
@@ -47,7 +47,6 @@ class UserController extends Controller
             'gender' => 'required|boolean',
         ]);
 
-
         try {
             $user = new User();
             $user->fill($validatedData);
@@ -59,14 +58,9 @@ class UserController extends Controller
         }
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
     public function edit(User $user)
     {
-        $this->user->authorizeAction('update', User::class);
+        $this->user->authorizeAction('update');
         return view('users.edit', [
             'user' => $user,
             'roles' => Role::all()
@@ -75,7 +69,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $this->user->authorizeAction('update', User::class);
+        $this->user->authorizeAction('update');
         $validatedData = $request->validate([
             'name' => 'required|string',
             'username' => 'required|unique:users,username,' . $user->id,
@@ -90,7 +84,7 @@ class UserController extends Controller
 
         try {
             $user->update($validatedData);
-            if (Gate::allows('viewAny', User::class)) {
+            if (Gate::allows('viewAny')) {
                 return redirect()->route('users.index')->with('success', 'User updated successfully!');
             } else {
                 return redirect()->route('dashboard');
@@ -102,7 +96,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $this->user->authorizeAction('delete', User::class);
+        $this->user->authorizeAction('delete');
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
