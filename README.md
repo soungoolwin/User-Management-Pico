@@ -54,6 +54,13 @@ To get started with the project, follow these steps:
     php artisan serve
     ```
 
+## Admin Credentials
+
+To access the admin dashboard, use the following credentials:
+
+-   **Username:** demo
+-   **Password:** picosbs
+
 ## Additional Notes
 
 -   Make sure you have PHP, Composer, Node.js, and npm installed on your system before proceeding with the setup.
