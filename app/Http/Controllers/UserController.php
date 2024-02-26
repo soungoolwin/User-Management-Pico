@@ -84,7 +84,8 @@ class UserController extends Controller
 
         try {
             $user->update($validatedData);
-            if (Gate::allows('viewAny')) {
+            if (Gate::allows('viewAny', User::class)) {
+
                 return redirect()->route('users.index')->with('success', 'User updated successfully!');
             } else {
                 return redirect()->route('dashboard');

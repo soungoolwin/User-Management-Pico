@@ -40,7 +40,7 @@ class RoleController extends Controller
             'role_name' => 'required|string',
         ]);
         $role = Role::create([
-            'name' => $validatedData,
+            'name' => $validatedData['role_name'],
         ]);
 
         $selectedPermissions = $request->input('permissions');
@@ -74,7 +74,7 @@ class RoleController extends Controller
             $permissions = Permission::whereIn('id', $selectedPermissions)->get();
             $role->permissions()->sync($permissions);
 
-            if (Gate::allows('viewAny')) {
+            if (Gate::allows('viewAny', Role::class)) {
                 return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
             } else {
                 return redirect()->route('dashboard');
