@@ -54,6 +54,12 @@ To get started with the project, follow these steps:
     php artisan serve
     ```
 
+9. **Compile assets for development:**
+
+    ```
+    npm run dev
+    ```
+
 ## Admin Credentials
 
 To access the admin dashboard, use the following credentials:
